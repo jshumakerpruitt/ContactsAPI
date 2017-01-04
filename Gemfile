@@ -20,6 +20,8 @@ gem 'rack-cors', :require => 'rack/cors'
 gem 'bcrypt', '~> 3.1.7'
 # knock for JWT auth
 gem 'knock'
+gem 'faker'
+
 
 
 group :development, :test do
