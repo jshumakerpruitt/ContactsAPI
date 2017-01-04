@@ -12,5 +12,6 @@ AllCops:
     - config/**/*
     - bin/spring
     - spec/rails_helper.rb
+    - spec/factories/*
 Documentation:
   Enabled: false
