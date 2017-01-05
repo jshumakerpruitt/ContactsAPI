@@ -20,7 +20,7 @@ describe 'user resource' do
                        { email: unpersisted_user.email,
                          password:  'weakpass1',
                          username: unpersisted_user.username },
-                     headers: {'ACCEPT' => 'application/json'}}
+                     headers: { 'ACCEPT' => 'application/json' } }
       expect(response.status).to eq(201)
     end
 
@@ -30,7 +30,6 @@ describe 'user resource' do
       expect(response.status).to eq(400)
     end
   end
-
 
   describe 'show current_user' do
     before(:each) do
@@ -45,13 +44,13 @@ describe 'user resource' do
     it 'returns json of current_user' do
       user_hash = JSON.parse(user.to_json)
       response_hash = JSON.parse(response.body)
-      user_hash.delete("password")
-      response_hash.delete("password")
+      user_hash.delete('password')
+      response_hash.delete('password')
       expect(response_hash).to eq(user_hash)
     end
 
     it 'should not show other_user' do
-      #user requests users#show of other_user
+      # user requests users#show of other_user
       get "/contacts/#{other_user.id}",
           headers: auth_headers(user)
       expect(response.status).to eq(400)

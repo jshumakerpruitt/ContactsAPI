@@ -17,4 +17,27 @@ RSpec.describe User, type: :model do
   it 'should set active to true before_create' do
     expect(user.active).to eq(true)
   end
+
+  describe '#find_from_token' do
+    it 'should lookup the user by email' do
+      request = double('Request')
+      allow(request).to receive(:params)
+        .and_return(
+          'auth' => { 'email' => user.email }
+        )
+
+      expect(User.from_token_request(request)).to eq(user)
+    end
+
+    it 'should ignore soft-deleted users' do
+      user.update_attribute(:active, false)
+      request = double('Request')
+      allow(request).to receive(:params)
+        .and_return(
+          'auth' => { 'email' => user.email }
+        )
+
+      expect(User.from_token_request(request)).to eq(nil)
+    end
+  end
 end

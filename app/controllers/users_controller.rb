@@ -11,8 +11,8 @@ class UsersController < ApplicationController
   end
 
   def show
-    #ensure requested resource is current_user
-    if params[:id] && params[:id] == "#{current_user.id}"
+    # ensure requested resource is current_user
+    if params[:id] && params[:id] == current_user.id.to_s
       render json: current_user, status: 200
     else
       render json: {}, status: 401
@@ -20,8 +20,8 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    #ensure requested resource is current_user
-    if params[:id] && params[:id] == "#{current_user.id}"
+    # ensure requested resource is current_user
+    if params[:id] && params[:id] == current_user.id.to_s
       user = User.find(params[:id])
       user.active = false
       user.save
