@@ -9,7 +9,7 @@ class ContactsController < ApplicationController
   end
 
   def show
-    #find will throw an error if contact doesn't belong to current_user
+    # find will throw an error if contact doesn't belong to current_user
     @contact = current_user.contacts.find(params[:id])
     render json: @contact, status: 200
   rescue StandardError
@@ -27,7 +27,7 @@ class ContactsController < ApplicationController
   end
 
   def destroy
-    #find will throw an error if contact doesn't belong to current_user
+    # find will throw an error if contact doesn't belong to current_user
     current_user.contacts.find(params[:id]).destroy
     render json: {}, status: 200
   rescue StandardError
@@ -40,4 +40,3 @@ class ContactsController < ApplicationController
     params.fetch(:contact, {}).permit(:email, :name, :birthdate)
   end
 end
-

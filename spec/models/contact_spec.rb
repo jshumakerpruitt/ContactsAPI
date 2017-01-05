@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Contact, type: :model do
   let(:user) { FactoryGirl.build(:user) }
-  let(:contact) {FactoryGirl.build(:contact)}
+  let(:contact) { FactoryGirl.build(:contact) }
   before(:example) do
     contact.user = user
   end
@@ -11,5 +11,4 @@ RSpec.describe Contact, type: :model do
   it { should validate_presence_of(:email) }
   it { should validate_presence_of(:user) }
   it { should belong_to(:user) }
-
 end
