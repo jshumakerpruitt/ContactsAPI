@@ -13,5 +13,6 @@ AllCops:
     - bin/spring
     - spec/rails_helper.rb
     - spec/factories/*
+    - db/seeds.rb
 Documentation:
   Enabled: false

@@ -4,21 +4,26 @@ class ContactsController < ApplicationController
   # association
 
   def index
-    @contacts = Contact.all
+    @contacts = current_user
+                .contacts
+                .order(id: :desc)
     render json: @contacts
   end
 
   def show
     # find will throw an error if contact doesn't belong to current_user
-    @contact = current_user.contacts.find(params[:id])
+    @contact = current_user
+               .contacts
+               .find(params[:id])
     render json: @contact, status: 200
   rescue StandardError
     render json: {}, status: 400
   end
 
   def create
-    @contact = current_user.contacts.build(contact_params)
-
+    @contact = current_user
+               .contacts
+               .build(contact_params)
     if @contact.save
       render json: {}, status: 200
     else
@@ -28,7 +33,10 @@ class ContactsController < ApplicationController
 
   def destroy
     # find will throw an error if contact doesn't belong to current_user
-    current_user.contacts.find(params[:id]).destroy
+    current_user
+      .contacts
+      .find(params[:id])
+      .destroy
     render json: {}, status: 200
   rescue StandardError
     render json: {}, status: 400
@@ -37,6 +45,9 @@ class ContactsController < ApplicationController
   private
 
   def contact_params
-    params.fetch(:contact, {}).permit(:email, :name, :birthdate)
+    params.fetch(:contact, {}).permit(
+      :email, :name, :birthdate,
+      :phone, :address
+    )
   end
 end
