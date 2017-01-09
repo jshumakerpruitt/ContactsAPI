@@ -1,4 +1,3 @@
-require 'byebug'
 class UsersController < ApplicationController
   before_action :authenticate_user, except: [:create]
   def create
