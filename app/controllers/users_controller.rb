@@ -25,7 +25,7 @@ class UsersController < ApplicationController
     # 1) current_user can only delete self
     # 2) errors are caught if deletion fails
     if params[:id] && params[:id] == current_user.id.to_s
-      user = User.find(current_user.id).destroy!
+      User.find(current_user.id).destroy!
       render json: {}, status: 200
     end
   rescue StandardError

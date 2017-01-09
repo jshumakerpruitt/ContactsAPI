@@ -21,6 +21,5 @@ describe 'user_token resource' do
                          password:  'wrongpassword' } }
       expect(response.status).to eq(404)
     end
-
   end
 end

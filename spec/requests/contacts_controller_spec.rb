@@ -30,8 +30,8 @@ describe 'contact resource' do
       expect(response.status).to eq(200)
     end
 
-    #active record callback prevents testing nil email
-    #so test uniqueness violation instead
+    # active record callback prevents testing nil email
+    # so test uniqueness violation instead
     it 'fails with invalid input' do
       post '/contacts', params: { contact: { email: contact.email } },
                         headers: auth_headers(user)

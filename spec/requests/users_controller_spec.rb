@@ -69,7 +69,9 @@ describe 'user resource' do
     end
 
     it 'deletes the user' do
-      expect {User.find(temp_user.id)}.to raise_error(ActiveRecord::RecordNotFound)
+      expect do
+        User.find(temp_user.id)
+      end.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 end

@@ -13,9 +13,9 @@ class ContactsController < ApplicationController
   def show
     # find will throw an error if contact doesn't belong to current_user
     @contact = current_user
-                 .contacts
-                 .where(active: true)
-                 .find(params[:id])
+               .contacts
+               .where(active: true)
+               .find(params[:id])
     render json: @contact, status: 200
   rescue StandardError
     render json: {}, status: 400
@@ -29,7 +29,7 @@ class ContactsController < ApplicationController
       render json: @contact, status: 200
     else
       logger.warn(@contact.errors.messages)
-      render json: {hi: 'hello'}, status: 400 
+      render json: {}, status: 400
     end
   end
 
@@ -37,9 +37,9 @@ class ContactsController < ApplicationController
     # find will throw an error if contact doesn't
     # belong to current_user
     @contact = current_user
-                .contacts
-                .where(active: true)
-                .find(params[:id])
+               .contacts
+               .where(active: true)
+               .find(params[:id])
     if @contact.update(contact_params)
       render json: @contact, status: 200
     else
@@ -48,17 +48,16 @@ class ContactsController < ApplicationController
     end
   rescue StandardError => e
     logger.error(e)
-    render json: {error: e}, status: 404
+    render json: { error: e }, status: 404
   end
 
   def destroy
     # find will throw an error if contact doesn't belong to current_user
     @contact = current_user
-      .contacts
-      .find(params[:id])
+               .contacts
+               .find(params[:id])
 
     @contact.update!(active: false)
-    logger.warn(@contact.active)
     render json: {}, status: 200
   rescue StandardError => e
     logger.error(e)
@@ -66,12 +65,12 @@ class ContactsController < ApplicationController
   end
 
   private
-  #use fetch to prevent errors if contact not provide
+
+  # use fetch to prevent errors if contact not provided
   def contact_params
     params.fetch(:contact, {}).permit(
       :email, :name, :birthdate,
       :phone, :address
     )
   end
-
 end

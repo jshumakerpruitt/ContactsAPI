@@ -18,5 +18,4 @@ RSpec.describe Contact, type: :model do
     contact.update(active: false)
     expect(user.active_contacts.where(id: contact.id).count).to eq(0)
   end
-
 end

@@ -13,7 +13,7 @@ class Contact < ApplicationRecord
   end
 
   def set_gravatar
-    digest = Digest::MD5.hexdigest(self.email || '')
+    digest = Digest::MD5.hexdigest(email || '')
     self.gravatar = digest
   end
 end
