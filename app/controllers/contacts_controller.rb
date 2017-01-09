@@ -2,10 +2,10 @@ class ContactsController < ApplicationController
   before_action :authenticate_user
   # To ensure privacy perform all actions throuh current_user's
   # association
-
   def index
     @contacts = current_user
                 .contacts
+                .where(active: true)
                 .order(id: :desc)
     render json: @contacts
   end
@@ -13,8 +13,9 @@ class ContactsController < ApplicationController
   def show
     # find will throw an error if contact doesn't belong to current_user
     @contact = current_user
-               .contacts
-               .find(params[:id])
+                 .contacts
+                 .where(active: true)
+                 .find(params[:id])
     render json: @contact, status: 200
   rescue StandardError
     render json: {}, status: 400
@@ -25,29 +26,52 @@ class ContactsController < ApplicationController
                .contacts
                .build(contact_params)
     if @contact.save
-      render json: {}, status: 200
+      render json: @contact, status: 200
     else
-      render json: @contact.errors, status: 400
+      logger.warn(@contact.errors.messages)
+      render json: {hi: 'hello'}, status: 400 
     end
+  end
+
+  def update
+    # find will throw an error if contact doesn't
+    # belong to current_user
+    @contact = current_user
+                .contacts
+                .where(active: true)
+                .find(params[:id])
+    if @contact.update(contact_params)
+      render json: @contact, status: 200
+    else
+      render json: @contact.errors.messages,
+             status: 400
+    end
+  rescue StandardError => e
+    logger.error(e)
+    render json: {error: e}, status: 404
   end
 
   def destroy
     # find will throw an error if contact doesn't belong to current_user
-    current_user
+    @contact = current_user
       .contacts
       .find(params[:id])
-      .destroy
+
+    @contact.update!(active: false)
+    logger.warn(@contact.active)
     render json: {}, status: 200
-  rescue StandardError
-    render json: {}, status: 400
+  rescue StandardError => e
+    logger.error(e)
+    render json: {}, status: 404
   end
 
   private
-
+  #use fetch to prevent errors if contact not provide
   def contact_params
     params.fetch(:contact, {}).permit(
       :email, :name, :birthdate,
       :phone, :address
     )
   end
+
 end

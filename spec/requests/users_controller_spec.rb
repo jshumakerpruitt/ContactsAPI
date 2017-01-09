@@ -68,9 +68,8 @@ describe 'user resource' do
       expect(response.status).to eq(200)
     end
 
-    it 'sets active to false' do
-      temp_user.reload
-      expect(temp_user.active).to eq(false)
+    it 'deletes the user' do
+      expect {User.find(temp_user.id)}.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 end

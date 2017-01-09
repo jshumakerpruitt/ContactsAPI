@@ -1,3 +1,4 @@
+User.destroy_all
 5.times do
   User.create(
     username: Faker::Internet.user_name,
@@ -19,6 +20,7 @@ demo_user = User.create!(
     phone: Faker::PhoneNumber.cell_phone,
     address: "#{Faker::Address.street_address} #{Faker::Address.city} #{Faker::Address.zip_code}",
     birthdate: Faker::Date.between(60.years.ago, 18.years.ago),
+    organization: Faker::Company.name,
     user: demo_user
   )
 end

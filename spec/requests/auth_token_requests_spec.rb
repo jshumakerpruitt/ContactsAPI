@@ -22,13 +22,5 @@ describe 'user_token resource' do
       expect(response.status).to eq(404)
     end
 
-    it 'returns 404 for soft-deleted users' do
-      user.update_attribute(:active, false)
-      post '/user_token',
-           params: { auth:
-                       { email: user.email,
-                         password:  user.password } }
-      expect(response.status).to eq(404)
-    end
   end
 end
