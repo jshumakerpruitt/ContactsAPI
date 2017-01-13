@@ -34,18 +34,7 @@ class ContactsController < ApplicationController
   end
 
   def update
-    # find will throw an error if contact doesn't
-    # belong to current_user
-    @contact = current_user
-               .contacts
-               .where(active: true)
-               .find(params[:id])
-    if @contact.update(contact_params)
-      render json: @contact, status: 200
-    else
-      render json: @contact.errors.messages,
-             status: 400
-    end
+    update_or_raise_error
   rescue StandardError => e
     logger.error(e)
     render json: { error: e }, status: 404
@@ -73,5 +62,20 @@ class ContactsController < ApplicationController
       :email, :name, :birthdate,
       :phone, :address, :organization
     )
+  end
+
+  def update_or_raise_error
+    # find will throw an error if contact doesn't
+    # belong to current_user
+    @contact = current_user
+               .contacts
+               .where(active: true)
+               .find(params[:id])
+    if @contact.update(contact_params)
+      render json: @contact, status: 200
+    else
+      render json: @contact.errors.messages,
+             status: 400
+    end
   end
 end

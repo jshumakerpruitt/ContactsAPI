@@ -24,8 +24,14 @@ describe 'contact resource' do
       get '/contacts', headers: auth_headers(user)
       expect(response.status).to eq(200)
     end
+
     it 'creates with valid input' do
-      post '/contacts', params: { contact: { email: 'aadfs@sfadsdfa.com' } },
+      post '/contacts', params: {
+        contact: {
+          email: 'aadfs@sfadsdfa.com',
+          name: 'a name'
+        }
+      },
                         headers: auth_headers(user)
       expect(response.status).to eq(200)
     end

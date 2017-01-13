@@ -1,7 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  let(:user) { FactoryGirl.create(:user) }
+  subject do
+    User.new(username: 'uname',
+             email: 'foo@bar.com')
+  end
 
   it { should validate_uniqueness_of(:email) }
   it { should validate_presence_of(:email) }
