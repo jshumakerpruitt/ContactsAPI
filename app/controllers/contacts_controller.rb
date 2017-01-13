@@ -29,7 +29,7 @@ class ContactsController < ApplicationController
       render json: @contact, status: 200
     else
       logger.warn(@contact.errors.messages)
-      render json: {}, status: 400
+      render json: @contact.errors.messages, status: 400
     end
   end
 
@@ -56,11 +56,12 @@ class ContactsController < ApplicationController
     @contact = current_user
                .contacts
                .find(params[:id])
-
     @contact.update!(active: false)
     render json: {}, status: 200
   rescue StandardError => e
     logger.error(e)
+    # we don't want to leak any info
+    # to a malicious attacker, so we return 404 with no message
     render json: {}, status: 404
   end
 
@@ -70,7 +71,7 @@ class ContactsController < ApplicationController
   def contact_params
     params.fetch(:contact, {}).permit(
       :email, :name, :birthdate,
-      :phone, :address
+      :phone, :address, :organization
     )
   end
 end
